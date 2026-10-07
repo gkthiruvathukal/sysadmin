@@ -32,11 +32,11 @@ asks for a change.
   (exit 0, per `/var/log/apt/history.log*`). No reboot pending; the Oct 4 run
   did not need one (system was already rebooted manually 2026-10-02 21:06
   after a manual `apt upgrade`).
-- **Bug found & fixed in the script (not yet applied on this server):** the
-  MOTD banner read `ActiveExitTimestamp`, which is never set for this
-  `Type=oneshot` service, so the "last run" line never printed. Changed to
-  `ExecMainExitTimestamp`. To apply: user re-runs
-  `sudo ./weekly-apt-updates-setup.sh` in a real terminal.
+- **Bug found & fixed:** the MOTD banner read `ActiveExitTimestamp`, which
+  is never set for this `Type=oneshot` service, so the "last run" line never
+  printed. Changed to `ExecMainExitTimestamp`. Applied on this server
+  2026-10-06 23:27 (user re-ran the setup script); banner verified showing
+  the last run time.
 - `last reboot` (wtmp) is stale on this host — use `uptime -s` for boot time.
 
 ### To resume / check on this
