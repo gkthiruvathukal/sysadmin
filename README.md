@@ -48,7 +48,7 @@ sudo UPGRADE_DAY=Sat UPGRADE_TIME=01:00:00 REBOOT_TIME=02:00 ./weekly-apt-update
 | `/etc/apt/apt.conf.d/20auto-upgrades` | Turns on the periodic hooks (`APT::Periodic::Update-Package-Lists`, `APT::Periodic::Unattended-Upgrade`). Without this file, the timers fire but never actually call `unattended-upgrade`. |
 | `/etc/apt/apt.conf.d/50unattended-upgrades` | Enables the `-updates` origin (regular packages, not just security), and sets `Remove-Unused-Dependencies`, `Remove-Unused-Kernel-Packages`, `Automatic-Reboot`, `Automatic-Reboot-WithUsers`, and `Automatic-Reboot-Time`. A one-time backup of the original file is saved as `50unattended-upgrades.orig` alongside it. |
 | `/etc/systemd/system/apt-daily-upgrade.timer.d/override.conf` | Replaces the stock **daily** schedule of `apt-daily-upgrade.timer` with a single **weekly** slot. `apt-daily.timer` (package list refresh, twice a day) is left untouched — harmless, and `unattended-upgrade` refreshes lists itself anyway. |
-| `/etc/update-motd.d/96-weekly-apt-status` | New login banner: shows the timestamp/result of the last `apt-daily-upgrade.service` run and the system's last boot time, so an SSH login tells you whether last Sunday's update (and reboot, if one happened) actually went through. |
+| `/etc/update-motd.d/96-weekly-apt-status` | New login banner: states the upgrade schedule in plain words (e.g. "every Sunday at 02:30 CDT", plus the reboot time), and shows the timestamp/result of the last `apt-daily-upgrade.service` run and the system's last boot time, so an SSH login tells you whether last Sunday's update (and reboot, if one happened) actually went through. |
 
 ## How you'll know it ran
 
@@ -58,6 +58,8 @@ Three banners show up automatically when you SSH in — no email, no polling req
 2. **`98-reboot-required`** (ships with `update-notifier-common`) — prints `*** System restart required ***` if a reboot is currently pending. Since `/var/run/reboot-required` lives on tmpfs, this clears itself the moment the reboot happens — so if you log in and *don't* see it after Sunday night, the reboot already completed.
 3. **`96-weekly-apt-status`** (added by this setup) — the persistent one: always shows the last run's timestamp and success/failure, plus the system's last boot time, e.g.:
    ```
+   System upgrades run automatically every Sunday at 02:30 CDT;
+   if an upgrade requires a reboot, the system reboots at 03:30 CDT.
    Weekly apt update: last run Sun 2026-09-27 02:30:41 CDT -- OK
    System last booted: 2026-09-27 03:31:02
    ```

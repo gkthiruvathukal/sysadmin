@@ -37,6 +37,11 @@ asks for a change.
   printed. Changed to `ExecMainExitTimestamp`. Applied on this server
   2026-10-06 23:27 (user re-ran the setup script); banner verified showing
   the last run time.
+- **Banner now also states the schedule** in plain words ("every Sunday at
+  02:30 CDT; reboots at 03:30 if needed"), baked in from the script's
+  `UPGRADE_DAY`/`UPGRADE_TIME`/`REBOOT_TIME` at install time. Committed
+  2026-10-06; **not yet applied on this server** — user re-runs
+  `sudo ./weekly-apt-updates-setup.sh` in a real terminal.
 - `last reboot` (wtmp) is stale on this host — use `uptime -s` for boot time.
 
 ### To resume / check on this
