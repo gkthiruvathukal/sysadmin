@@ -85,7 +85,7 @@ cat > /etc/update-motd.d/96-weekly-apt-status <<'EOF'
 # last boot time, so an admin logging in can tell whether the scheduled
 # update/reboot actually happened.
 SVC=apt-daily-upgrade.service
-LAST=$(systemctl show "$SVC" -p ActiveExitTimestamp --value 2>/dev/null)
+LAST=$(systemctl show "$SVC" -p ExecMainExitTimestamp --value 2>/dev/null)
 CODE=$(systemctl show "$SVC" -p ExecMainStatus --value 2>/dev/null)
 BOOT=$(uptime -s 2>/dev/null)
 

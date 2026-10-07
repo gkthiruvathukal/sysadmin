@@ -23,10 +23,21 @@ asks for a change.
 - `/etc/apt/apt.conf.d/50unattended-upgrades` — patched (`-updates` origin,
   cleanup + auto-reboot options); original backed up as `.orig` alongside it.
 - `/etc/systemd/system/apt-daily-upgrade.timer.d/override.conf` — weekly
-  schedule active. Next run: **Sun 2026-09-27 02:30 CDT** (had not yet
-  happened as of the last check in this session).
+  schedule active (Sun 02:30 CDT).
 - `/etc/update-motd.d/96-weekly-apt-status` — installed. Shows last run
   timestamp/result + last boot time on every SSH login.
+
+### Check on 2026-10-06
+- Runs on Sun 2026-09-27 02:32 and Sun 2026-10-04 02:30 both succeeded
+  (exit 0, per `/var/log/apt/history.log*`). No reboot pending; the Oct 4 run
+  did not need one (system was already rebooted manually 2026-10-02 21:06
+  after a manual `apt upgrade`).
+- **Bug found & fixed in the script (not yet applied on this server):** the
+  MOTD banner read `ActiveExitTimestamp`, which is never set for this
+  `Type=oneshot` service, so the "last run" line never printed. Changed to
+  `ExecMainExitTimestamp`. To apply: user re-runs
+  `sudo ./weekly-apt-updates-setup.sh` in a real terminal.
+- `last reboot` (wtmp) is stale on this host — use `uptime -s` for boot time.
 
 ### To resume / check on this
 Just ask, e.g. "did the weekly update run last night?" — a fresh session can
