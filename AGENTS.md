@@ -82,27 +82,13 @@ the recurring job itself runs as root via systemd and never needed sudo at
 all. The one-time setup step being manual is an accepted tradeoff, not an
 open problem to solve.
 
-## In progress (2026-10-06): publish this repo to GitHub
+## Published to GitHub (2026-10-06)
 
-Goal: public repo `gkthiruvathukal/sysadmin` so other servers can
-`git clone` / `git pull` it over SSH.
-
-- Repo contents checked for secrets (full history): none. User approved public.
-- Remote already added: `origin` → `git@github.com:gkthiruvathukal/sysadmin.git`
-  (user wants SSH URLs, not HTTPS — keys for github.com are on their servers).
-- SSH to GitHub works from this server (`ssh -T git@github.com` → authenticated
-  as gkthiruvathukal).
-- **Blocked:** repo doesn't exist on GitHub yet, and `gh` can't create it —
-  `GH_TOKEN` in the user's shell env is invalid and overrides the saved login,
-  and `~/.config/gh/hosts.yml` (last written 2025-07-19) is also invalid. User
-  is removing `GH_TOKEN` and re-running `gh auth login` in their own terminal.
-
-Next steps once `gh auth status` is OK (run `gh` with `env -u GH_TOKEN` if
-Claude Code was started while the old token was still exported):
+Public repo: https://github.com/gkthiruvathukal/sysadmin (`main` tracks
+`origin/main`, SSH remote `git@github.com:gkthiruvathukal/sysadmin.git`).
+Other servers can now deploy with:
 ```
-gh repo create gkthiruvathukal/sysadmin --public
-git push -u origin main
-git status -sb; git ls-remote origin   # confirm tracking + remote matches local
+git clone git@github.com:gkthiruvathukal/sysadmin.git && cd sysadmin
+sudo ./weekly-apt-updates-setup.sh
 ```
-(Don't use `--source . --push` with `gh repo create` — it would try to add a
-remote that already exists.)
+and update later with `git pull` + re-running the script.
